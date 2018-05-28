@@ -12,11 +12,14 @@ function waitForInstallation (
   client: any,
   count: number = 0
 ): Bluebird<void> {
+  options.getLogger().debug(`Waiting for ${delay} milliseconds (${count} of max. ${options.maxRetries})`)
   return Bluebird.delay(
     delay
   )
     .then(
       () => {
+        options.getLogger().debug(`Checking for installation status`)
+
         return client.get(
           url
         )
@@ -24,16 +27,19 @@ function waitForInstallation (
             response => {
               let responseBody = JSON.parse(response)
               if (!responseBody.enabled) {
+                count = count + 1
                 if (count > options.maxRetries) {
                   throw new Error('Max retries reached waiting for plugin installation')
                 }
                 return waitForInstallation(
-                  Number(responseBody.status.pingAfter),
+                  Number(responseBody.pingAfter),
                   options.url + responseBody.links.self,
                   options,
                   client,
-                  count++
+                  count
                 )
+              } else {
+                options.getLogger().debug('Plugin installation finished')
               }
             }
           )
@@ -54,6 +60,8 @@ export class Jira extends AbstractInstaller {
 
     // fetch token
 
+    options.getLogger().debug('Connecting to JIRA to fetch upm-token')
+
     return client.get(
       `${options.url}${options.contextPath}/rest/plugins/1.0/`,
       {
@@ -65,7 +73,12 @@ export class Jira extends AbstractInstaller {
     )
       .then(
         (response: request.Response) => {
+
           let token = response.headers[ 'upm-token' ]
+
+          options.getLogger().debug(`Using token ${token}`)
+          options.getLogger().debug(`Uploading file ${options.file.baseName}`)
+
           // upload plugin
 
           return client.post(

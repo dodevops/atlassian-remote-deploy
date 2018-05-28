@@ -1,6 +1,6 @@
 {
     "name": "atlassian-remote-deploy",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Remote deployment of JAR plugin files to Atlassian products",
     "keywords": [
         "atlassian",
@@ -31,6 +31,7 @@
         "loglevel": "^1.6.1",
         "clime": "^0.5.9",
         "request-promise": "^4.2.2",
+        "loglevel-plugin-prefix": "^0.8.3",
         "request": "^2.87.0"
     },
     "devDependencies": {

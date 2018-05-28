@@ -1,5 +1,6 @@
 import { ExpectedError, option, Options, ValidationContext } from 'clime'
 import { SupportedProducts } from './SupportedProducts'
+import log = require('loglevel')
 
 export class DefaultOptions extends Options {
   @option({
@@ -60,5 +61,26 @@ export class DefaultOptions extends Options {
     description: 'Number of retries checking for plugin installation before giving up.',
     default: 30
   }) public maxRetries: Number
+
+  @option({
+    description: 'Log-Level to use (debug, verbose, info, warn, error)',
+    default: 'error',
+    validator: /debug|verbose|info|warn|error/
+  })
+  public loglevel: string
+
+  public getLogger (): log.Logger {
+    let prefix = require('loglevel-plugin-prefix')
+    prefix.reg(log)
+    prefix.apply(
+      log,
+      {
+        template: '[%t] %l (%n)'
+      }
+    )
+    log.setDefaultLevel(this.loglevel as log.LogLevelDesc)
+    let logger = log.getLogger('atlassian-remote-deploy')
+    return logger
+  }
 
 }
