@@ -1,6 +1,6 @@
 {
     "name": "atlassian-remote-deploy",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Remote deployment of JAR plugin files to Atlassian products",
     "keywords": [
         "atlassian",

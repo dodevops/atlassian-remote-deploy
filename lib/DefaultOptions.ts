@@ -20,7 +20,8 @@ export class DefaultOptions extends Options {
             Object as any
           ).values(SupportedProducts).join(','))
       }
-    }
+    },
+    required: true
   }) public product: SupportedProducts
 
   @option({
