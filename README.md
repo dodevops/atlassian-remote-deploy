@@ -1,5 +1,7 @@
 # atlassian-remote-deploy - Remote deployment of JAR plugin files to Atlassian products
 
+[![npm](https://img.shields.io/npm/v/atlassian-remote-deploy.svg)](https://www.npmjs.com/package/atlassian-remote-deploy)
+
 ## Introduction
 
 This small script helps with the remote installation of plugins for Atlassian products. You simply need a JAR file
